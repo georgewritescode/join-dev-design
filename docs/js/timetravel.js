@@ -15,14 +15,14 @@ fetch("https://api.github.com/repos/Microsoft/join-dev-design/commits")
     console.log("Fetch Error :-S", err);
   });
 
-function setHtmlAsLastTimeChanged(commitSha) {
+function setHTMLAsLastTimeChanged(commitSha) {
   fetch("https://api.github.com/repos/Microsoft/join-dev-design/commits/" + commitSha)
     .then(function(response) {
       response.json().then(function(commit) {
 			if(commit.files.filter((function(file) {
 				return (file.filename.indexOf('index.html') > -1)
 			})).length > 0) {
-				getBodyHtmlAtCommit(commitSha)
+				getBodyHTMLAtCommit(commitSha)
 			} else {
 				timeTravelBack()
 			}
@@ -33,7 +33,7 @@ function setHtmlAsLastTimeChanged(commitSha) {
     });
 }
 
-function getBodyHtmlAtCommit(commitSha) {
+function getBodyHTMLAtCommit(commitSha) {
   fetch(
     "https://raw.githubusercontent.com/Microsoft/join-dev-design/" +
       commitSha +
@@ -59,5 +59,5 @@ function timeTravelBack() {
 
   window.currentCommitIndex += 1;
   var nextCommitSha = window.commits[window.currentCommitIndex].sha;
-  setHtmlAsLastTimeChanged(nextCommitSha);
+  setHTMLAsLastTimeChanged(nextCommitSha);
 }
