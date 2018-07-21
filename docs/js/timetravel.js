@@ -19,12 +19,18 @@ fetch(
 
 function timeTravelBack() {
   window.currentCommitIndex += 1;
-  var commit = window.commits[window.currentCommitIndex]
-  var spacer = "<hr>&nbsp;" + commit.commit.author.name + " - " + commit.commit.message + " <hr>";
-  url = '/docs/history/' + commit.sha + ".html"
+  var commit = window.commits[window.currentCommitIndex];
+  var spacer =
+    "<hr>&nbsp;" +
+    commit.commit.author.name +
+    " - " +
+    commit.commit.message +
+    " <hr>";
+  url = "/history/" + commit.sha + ".html";
   fetch(url).then(function(response) {
     response.text().then(function(content) {
-      document.getElementById("renderPreviousCommitNode").innerHTML += (spacer + content);
+      document.getElementById("renderPreviousCommitNode").innerHTML +=
+        spacer + content;
     });
   });
 }
