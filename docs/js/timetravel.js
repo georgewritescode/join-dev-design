@@ -11,6 +11,8 @@ fetch(
     response.json().then(function(commits) {
       window.commits = commits;
       window.currentCommitIndex = 0;
+      document.getElementById("time-travel-button-container").style.display =
+        "block";
     });
   })
   .catch(function(err) {
