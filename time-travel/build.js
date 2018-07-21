@@ -13,15 +13,18 @@ const query = `
       edges {
         node {
           id
-          participants(first: 10) {
-            edges {
-              node {
-                name
-                avatarUrl
-              }
-            }
+          body
+          mergedAt
+          author {
+            login
+            avatarUrl
+          }
+          editor {
+            login
+            avatarUrl
           }
           mergeCommit {
+            committedDate
             id
             zipballUrl
           }
@@ -42,6 +45,16 @@ const historyFolderPath = path.resolve(
  * - Flush `./zips` folder.
  * - Flush `../docs/history` folder.
  */
+const flushHistoryFolder = data =>
+  fs
+    .remove(historyFolderPath)
+    .then(() => {
+      console.log("history folder flushed.");
+      return data;
+    })
+    .catch(err => {
+      console.error(err);
+    });
 
 /**
  * getData from github
@@ -79,7 +92,6 @@ const writeJSONToDocs = data => {
 
 /**
  * Download the whole repo & extract in docs.
- * Ideally it should extract only docs folder (not including `docs/history`), but I haven't figured that out yet.
  * Unzip's extract doesn't always emit 'close'. Maybe consider switching to a different zip library
  * @param {String} options.name A string that'll be used to name the folder.
  * @param {String} options.url github's url to a zipball.
@@ -153,6 +165,7 @@ const writeHistoryFolder = options => {
 };
 
 getDataFromGithub()
+  .then(flushHistoryFolder)
   .then(writeJSONToDocs)
   .then(res => {
     const unzipPromises = res.data.repository.pullRequests.edges.map(edge => {

@@ -1,14 +1,20 @@
-const getData = () =>
+const getPullRequests = () =>
   fetch("./index.json")
     .then(res => res.json())
-    .then(res => console.log(res.data))
+    .then(res => res.data.repository.pullRequests.edges)
     .catch(err => console.warn(err));
 
-const pullRequests = getData().then();
-
-window.onload = () => {
+window.onload = async () => {
   const $button = document.getElementById("button");
   const $display = document.getElementById("display");
 
-  $button.onclick = e => {};
+  const pullRequests = await getPullRequests();
+  const pullRequestIds = pullRequests.map(pr => pr.node.id);
+
+  let currentDisplay = 0;
+
+  $button.onclick = e => {
+    currentDisplay++;
+    $display.src = `./history/${pullRequestIds[0]}/docs/`;
+  };
 };
