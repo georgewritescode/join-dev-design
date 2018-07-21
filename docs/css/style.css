@@ -258,3 +258,13 @@ footer [href*="github"]:hover {
     display: block;
   }
 }
+
+
+#time-travel-button-container  {
+  text-align: center;
+}
+
+#time-travel-button-container a {
+
+  cursor: pointer;
+}
