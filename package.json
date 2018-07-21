@@ -7,7 +7,8 @@
     "doc": "docs"
   },
   "scripts": {
-    "start": "serve -s docs"
+    "start": "serve -s docs",
+    "build-timetravel": "node scripts/build-timetravel.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,8 @@
   "homepage": "https://github.com/Microsoft/join-dev-design#readme",
   "devDependencies": {
     "serve": "^9.2.0"
+  },
+  "dependencies": {
+    "node-fetch": "^2.1.2"
   }
 }
