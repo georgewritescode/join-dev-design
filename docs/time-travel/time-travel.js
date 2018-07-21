@@ -42,9 +42,13 @@ window.onload = async () => {
 
   const $display = getEl("js-display");
   const $historyId = getEl("js-history-id");
+  const $historyMax = getEl("js-history-max");
+
   const $prTitle = getEl("js-pr-title");
   const $prAuthor = getEl("js-pr-author");
+  const $prAuthorAvatar = getEl("js-pr-author-avatar");
   const $prEditor = getEl("js-pr-editor");
+  const $prEditorAvatar = getEl("js-pr-editor-avatar");
   const $prMergedAt = getEl("js-pr-mergedAt");
 
   const updateDisplay = currentDisplay => {
@@ -54,13 +58,29 @@ window.onload = async () => {
     $display.src = `./history/${id}/docs/`;
     $historyId.textContent = currentDisplay;
     $prTitle.textContent = title;
+
     $prAuthor.textContent = author.login;
-    $prEditor.textContent = editor && editor.login;
+    $prAuthorAvatar.src = author.avatarUrl;
+    $prAuthorAvatar.setAttribute("alt", `Author: ${author.login}`);
+
+    if (editor) {
+      $prEditor.textContent = editor && editor.login;
+      $prEditorAvatar.src = editor.avatarUrl;
+      $prAuthorAvatar.setAttribute("alt", `Author: ${author.login}`);
+    } else {
+      $prEditor.textContent = "No editor";
+      $prEditorAvatar.src = "";
+      $prAuthorAvatar.setAttribute("alt", `No editor`);
+    }
+
     $prMergedAt.textContent = mergedAt;
   };
 
   const pullRequests = await getPullRequests();
   const count = new DisplayCount(pullRequests.length);
+
+  $historyMax.textContent = count.max;
+  updateDisplay(count.maximize());
 
   $buttonFirst.onclick = () => {
     updateDisplay(count.reset());
